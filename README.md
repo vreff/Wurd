@@ -298,3 +298,12 @@ examples/
 ## Output
 
 The compiler produces a self-contained HTML file in `dist/<dir-name>/index.html`. Everything — CSS, JavaScript, plugin output — is inlined. No external dependencies at runtime except optional CDN links (e.g. KaTeX fonts).
+
+## Recommended Editors
+
+Wurd documents are just markdown files, so any editor works. A few that make the writing experience nicer:
+
+- **VS Code** with [Rich Markdown Editor](https://marketplace.visualstudio.com/items?itemName=nicepkg.vscode-rich-markdown-editor) — WYSIWYG-style editing with live preview
+- **[Typora](https://typora.io/)** — clean, distraction-free markdown editor with inline rendering
+- **[iA Writer](https://ia.net/writer)** — focused writing with syntax highlighting and content blocks
+- **[Obsidian](https://obsidian.md/)** — good for organizing multiple documents with wiki-style linking
