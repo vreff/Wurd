@@ -1,6 +1,18 @@
 # Wurd
 
-A document compiler that turns markdown with plugin tags into editorial-quality HTML pages. Uses [Pretext](https://github.com/chenglou/pretext) for typographic layout, KaTeX for math, and optionally an LLM for AI-generated graphs and tables.
+Markdown with plugins → editorial-quality HTML. Powered by [Pretext](https://github.com/chenglou/pretext) for typographic layout, KaTeX for math, and optionally an LLM for AI-generated content.
+
+```
+text.md ──→ wurd ──→ self-contained index.html
+               ↑
+           plugins (math, graphs, tables, citations, ...)
+```
+
+Here's an example of what Wurd can produce:
+
+<p align="center">
+  <img src="sample.png" alt="Sample output" width="720" />
+</p>
 
 ## Quick Start
 
