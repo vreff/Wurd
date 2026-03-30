@@ -294,7 +294,7 @@ plugins/
   table/          LLM-generated tables
 examples/
   hello-world/    Minimal example (no LLM needed)
-  zk-guide/       Full-featured article
+  zippy/          Full-featured article
 ```
 
 ## Output

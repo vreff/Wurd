@@ -10,9 +10,8 @@
     "wurd": "src/cli.ts"
   },
   "scripts": {
-    "build": "npx tsx src/cli.ts",
-    "compile": "npx tsx src/cli.ts examples/zk-guide/text.md",
-    "serve": "npx serve dist/zk-guide"
+    "compile": "npx tsx src/cli.ts",
+    "serve": "npx serve dist"
   },
   "dependencies": {
     "@chenglou/pretext": "^0.0.3",
