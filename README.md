@@ -1,6 +1,6 @@
 # Wurd
 
-Markdown with plugins → editorial-quality HTML. Powered by [Pretext](https://github.com/chenglou/pretext) for typographic layout, KaTeX for math, and optionally an LLM for AI-generated content.
+An AI-enabled document compiler that turns markdown files into editorial-quality HTML. Powered by [Pretext](https://github.com/chenglou/pretext) for typographic layout, [KaTeX](https://katex.org/) for math, and LLMs for AI-generated content. Implement your own plugins for unlimited versatility.
 
 ```
 text.md ──→ wurd ──→ self-contained index.html
