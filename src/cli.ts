@@ -159,7 +159,10 @@ async function main(): Promise<void> {
   const outPath = join(outDir, 'index.html')
   writeFileSync(outPath, fullHtml, 'utf-8')
 
-  console.log(`Output: ${outPath}`)
+  const relativePath = outPath.startsWith(projectRoot)
+    ? outPath.slice(projectRoot.length + 1)
+    : outPath
+  console.log(`Output: ${relativePath}`)
   console.log(`Size: ${(fullHtml.length / 1024).toFixed(1)} KB`)
 }
 

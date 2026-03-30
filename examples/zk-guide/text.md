@@ -1,6 +1,6 @@
 ---
-columns: 2
-columnWidth: 500
+columns: 1
+columnWidth: 1200
 dropCap: true
 accentColor: '#7c6ee6'
 h1MaxFontSize: 120
@@ -36,7 +36,7 @@ The general steps that Zippy follows are:
 
 ### Why this guide?
 
-There is no shortage of great guides on the basics of zero-knowledge proofs (zk, for short)\[plugin:cite]Goldwasser, Micali, Rackoff, "The Knowledge Complexity of Interactive Proof Systems", 1989, https://doi.org/10.1137/0218012\[/plugin], but there is a chasm between those guides — which mainly focus on the concept of a zero-knowledge proof — and actually understanding how today's proving systems verify computation. The learning curve goes from basic logical arguments straight to advanced algebra and number theory.
+There is no shortage of great guides on the basics of zero-knowledge proofs (zk, for short), but there is a chasm between those guides — which mainly focus on the concept of a zero-knowledge proof — and actually understanding how today's proving systems verify computation. The learning curve goes from basic logical arguments straight to advanced algebra and number theory.
 
 The proving systems of today bring together a few highly technical concepts: execution traces, arithmetization, polynomial interpolation, constraints, and commitment schemes. Zippy uses all of these, in a simplified form. Some aspects of Zippy are closest to a STARK[plugin:cite]Ben-Sasson, Bentov, Horesh, Riabzev, "Scalable, Transparent, and Post-quantum Secure Computational Integrity", 2018, https://eprint.iacr.org/2018/046[/plugin], but the general steps are the same ones followed by both SNARKs and STARKs. If you understand this guide, you will be able to use that understanding to tackle the much more complicated, more specific system of your choice.
 
@@ -97,7 +97,7 @@ For our use case, when we pick what kind of function we want to plot through our
 
 The reason why we like to use a quadratic equation to describe our function, is because our column has 3 points. As it turns out, there is 1 unique polynomial with degree \[plugin:math\]d\[/plugin\] that passes through \[plugin:math\]d+1\[/plugin\] points. In other words, there is one unique quadratic equation (our function \[plugin:math\]f\[/plugin\]) that can be used to represent our data points (1, 2), (2, 4), (3, 16). If that doesn't yet make sense, no worries, let's use a simpler example and move up from there.
 
-We can express this concept with simpler functions than the quadratic equation: namely, polynomials of highest-degree 1. These are also just called lines: \[plugin:math\]f(x) = mx + b\[/plugin\]. An example of a line is \[plugin:math\]f(x) = x + 1\[/plugin\]. I'm not overloading that term "line" with something more complicated, I'm literally just talking about lines, like the ones you can draw on paper. Anyway, a line is a degree-1 polynomial, because it could also be written as \[plugin:math\]f(x) = x^1 + 1\[/plugin\]. See? The highest degree we are raising \[plugin:math\]x\[/plugin\] to is 1, so it's a degree-1 polynomial. Here's our line plotted on a graph:
+We can express this concept with simpler functions than the quadratic equation: namely, polynomials of highest-degree 1. These are also just called lines: \[plugin:math\]f(x) = mx + b\[/plugin\]. An example of a line is \[plugin:math\]f(x) = x + 1\[/plugin\]. I'm not overloading that term "line" with something more complicated, I'm literally just talking about lines. A line is a degree-1 polynomial, because it could also be written as \[plugin:math\]f(x) = x^1 + 1\[/plugin\]. Here's our line plotted on a graph:
 
 \[plugin:graph\]Plot EXACTLY ONE line: f(x) = x + 1, as a solid blue line (#4a9eff), thickness 2.5. Do NOT draw any other lines.
 Data points at (0, 1) and (1, 2) as red circles (#ef4444), radius 5.
@@ -161,7 +161,7 @@ At any rate, you don't need to know exactly how to construct these functions fro
 
 Now that we have a function \[plugin:math\]f(x)\[/plugin\] that uniquely fits our original points (1, 2), (2, 4), (3, 16), and therefore uniquely represents our original execution trace, we can get to the meat of our zk proving system.
 
-Here's the main part: the way by which we prove that our computation is valid (i.e., the 4th root of 16 = 2), is by convincing someone that our unique \[plugin:math\]f(x)\[/plugin\] function satisfies certain properties. We do this by using points on our polynomial other than our original data. By doing this, the person we are proving to is convinced that the original data points are valid, and represent a valid execution trace, without ever being shown the original data points! Very zero-knowledge, indeed.
+Here's the main part: the way by which we prove that our computation is valid (i.e., the 4th root of 16 = 2), is by convincing someone that our unique \[plugin:math\]f(x)\[/plugin\] function satisfies certain properties. We do this by using points on our polynomial other than our original data. The result is that the person we are proving to is convinced that the original data points are valid, and represent a valid execution trace, without ever being shown the original data points! Very zero-knowledge, indeed.
 
 Our dataset, and consequently \[plugin:math\]f(x)\[/plugin\], has two important properties:
 
@@ -202,7 +202,7 @@ What does it mean when a polynomial has zeroes? Once again, this should be dorma
 
 \[plugin:math\]\[e(x) = x^2 - 5x + 6\]\[/plugin\]
 
-If we factor this polynomial, we get \[plugin:math\]e(x) = (x - 3)(x - 2)\[/plugin\] as the factors of our polynomial. You can probably verify this yourself, or ask AI for a refresher. If \[plugin:math\](x - 3)\[/plugin\] is a factor of the polynomial, that means that 3 is a zero for that polynomial, and the same goes for \[plugin:math\](x - 2)\[/plugin\]. Let's try it out:
+If we factor this polynomial, we get \[plugin:math\]e(x) = (x - 3)(x - 2)\[/plugin\] as the factors of our polynomial. You can probably verify this yourself, or ask AI for a refresher. If \[plugin:math\](x - 3)\[/plugin\] is a factor of the polynomial, that means that 3 is a zero for that polynomial, and the same goes for \[plugin:math\](x - 2).\[/plugin\] Let's try it out:
 
 \[plugin:math\]\[e(3) = 3^2 - 5 \\cdot 3 + 6 = 9 - 15 + 6 = 0\]\[/plugin\]
 
@@ -235,21 +235,23 @@ Where the … represents the rest of the factors of \[plugin:math\]c(x)\[/plugin
 At this point we have our original \[plugin:math\]f(x)\[/plugin\] function, plus a \[plugin:math\]c(x)\[/plugin\] function that represents \[plugin:math\]c(x) = f(x+1) - f(x) \\cdot f(x)\[/plugin\], and finally a new \[plugin:math\]h(x)\[/plugin\] function that represents all the factors of \[plugin:math\]c(x)\[/plugin\] besides \[plugin:math\](x - 1)\[/plugin\] and \[plugin:math\](x - 2)\[/plugin\]. Using these three things, we can actually prove what we need to prove! And here's how:
 
 
-1. Our verifier picks a random \[plugin:math\]x\[/plugin\] value, we'll call it \[plugin:math\]z\[/plugin\], that isn't from any of our known x values \[plugin:math\]x = 1\[/plugin\], \[plugin:math\]x = 2\[/plugin\], or \[plugin:math\]x = 3\[/plugin\]. As we mentioned earlier in the guide, this is the part where we use points outside of our original dataset.
-2. The prover calculates \[plugin:math\]f(z)\[/plugin\], \[plugin:math\]f(z+1)\[/plugin\], \[plugin:math\]c(z)\[/plugin\] and \[plugin:math\]h(z)\[/plugin\] and gives those evaluations to the verifier. These evaluations are the zk proof.
+1. Our verifier picks a random large \[plugin:math\]x\[/plugin\] value, we'll call it \[plugin:math\]z\[/plugin\], that isn't from any of our known x values \[plugin:math\]x = 1\[/plugin\], \[plugin:math\]x = 2\[/plugin\], or \[plugin:math\]x = 3\[/plugin\]. As we mentioned earlier in the guide, this is the part where we use points outside of our original dataset.
+2. The prover calculates \[plugin:math\]f(z)\[/plugin\], \[plugin:math\]f(z+1)\[/plugin\], \[plugin:math\]c(z)\[/plugin\] and \[plugin:math\]h(z)\[/plugin\] and gives those evaluations to the verifier. 
 3. The verifier validates that \[plugin:math\]c(z) = f(z+1) - f(z) \\cdot f(z)\[/plugin\].
 4. The verifier validates that \[plugin:math\]h(z) \\cdot (z - 1)(z - 2) = c(z)\[/plugin\].
 5. The verifier is convinced that \[plugin:math\]f(x + 1) = f(x) \\cdot f(x)\[/plugin\] for \[plugin:math\]x = 1, 2\[/plugin\].
 
 Wait, what? How? Why would checking a single random point be convincing at all?
 
-The key insight is this: two different low-degree polynomials can only agree at a small number of points. So if the prover's polynomials agree with the expected relationships at a randomly chosen point, they are almost certainly the same polynomials everywhere. This is known as the **Schwartz-Zippel lemma**[plugin:cite]Schwartz, "Fast Probabilistic Algorithms for Verification of Polynomial Identities", 1980, https://doi.org/10.1145/322217.322225[/plugin][plugin:cite]Zippel, "Probabilistic Algorithms for Sparse Polynomials", 1979, https://doi.org/10.1007/3-540-09519-5_73[/plugin], and it is the reason a single random evaluation is enough to convince the verifier. If the prover were lying, the chance that their fake polynomials happen to satisfy the checks at a random \[plugin:math\]z\[/plugin\] is vanishingly small.
+In order to answer this question, we have to use something called the **Schwartz-Zippel lemma**[plugin:cite]Schwartz, "Fast Probabilistic Algorithms for Verification of Polynomial Identities", 1980, https://doi.org/10.1145/322217.322225[/plugin][plugin:cite]Zippel, "Probabilistic Algorithms for Sparse Polynomials", 1979, https://doi.org/10.1007/3-540-09519-5_73[/plugin]. This may sound scary, but the result of this lemma that we care about is very simple: if two polynomials \[plugin:math\]a(x)\[/plugin\] and \[plugin:math\]b(x)\[/plugin\] are not equal to each other, then for a large enough random \[plugin:math\]z\[/plugin\] the probability that \[plugin:math\]a(z) = b(z)\[/plugin\] is extremely small.
 
-We can break the verification into logical steps to understand it better:
+What does that mean for us? It means that if the prover used their polynomials \[plugin:math\]c\[/plugin\] and \[plugin:math\]f\[/plugin\] to calculate \[plugin:math\]c(z) = f(z+1) - f(z) \cdot f(z)\[/plugin\], and if \[plugin:math\]c(x)\[/plugin\] and \[plugin:math\]f(x+1) - f(x) \cdot f(x)\[/plugin\] were not actually equal polynomials, then due to the Schwartz-Zippel lemma the probability that the equation holds at random \[plugin:math\]z\[/plugin\] is extremely small. Conversely, the opposite holds: if \[plugin:math\]c(z) = f(z+1) - f(z) \cdot f(z)\[/plugin\] does check out at a random \[plugin:math\]z\[/plugin\], then it is overwhelmingly likely that \[plugin:math\]c(x) = f(x+1) - f(x) \cdot f(x)\[/plugin\] everywhere. The same logic applies to every equation the verifier checks. This is why we say that the verifier is "convinced," because they understand that the probability of the prover being able to cheat is extremely small.
 
-**For Step 3:** Remember that we defined \[plugin:math\]c(x)\[/plugin\] as \[plugin:math\]c(x) = f(x+1) - f(x) \\cdot f(x)\[/plugin\]. So it makes sense that for some random \[plugin:math\]z\[/plugin\], the equation \[plugin:math\]c(z) = f(z+1) - f(z) \\cdot f(z)\[/plugin\] will also hold. We're just confirming what we expect \[plugin:math\]c(x)\[/plugin\] to be for a random \[plugin:math\]x\[/plugin\]. At this point, we have asserted that \[plugin:math\]c(x) = f(x+1) - f(x) \\cdot f(x)\[/plugin\], although this doesn't tell us anything useful about \[plugin:math\]f(x)\[/plugin\] yet.
+Now, we can use that fact to re-examine those evaluations at z:
 
-**For Step 4:** Now that we've validated that \[plugin:math\]c(z) = f(z+1) - f(z) \\cdot f(z)\[/plugin\], we then validate that \[plugin:math\]c(z) = h(z) \\cdot (z - 1)(z - 2)\[/plugin\]. Why do we do this? Remember that if a polynomial contains a factor like \[plugin:math\](x - 1)\[/plugin\], it evaluates to zero at \[plugin:math\]x = 1\[/plugin\]. So by saying that \[plugin:math\]c(z) = h(z) \\cdot (z - 1)(z - 2)\[/plugin\], we are saying that \[plugin:math\]c(x)\[/plugin\] has factors \[plugin:math\](x - 1)\[/plugin\] and \[plugin:math\](x - 2)\[/plugin\]. Further, by saying that \[plugin:math\]c(x)\[/plugin\] has factors \[plugin:math\](x - 1)\[/plugin\] and \[plugin:math\](x - 2)\[/plugin\], we are saying that \[plugin:math\]c(x) = 0\[/plugin\] for \[plugin:math\]x = 1\[/plugin\] and \[plugin:math\]c(x) = 0\[/plugin\] for \[plugin:math\]x = 2\[/plugin\].
+Step 3 convinces the verifier that \[plugin:math\]c(x) = f(x+1) - f(x) \\cdot f(x)\[/plugin\], due to the Schwartz-Zippel Lemma. However, it doesn't tell us anything useful about \[plugin:math\]f(x)\[/plugin\] yet.
+
+**For Step 4:** Now that we've validated that \[plugin:math\]c(z) = f(z+1) - f(z) \\cdot f(z)\[/plugin\], we then validate that \[plugin:math\]c(z) = h(z) \\cdot (z - 1)(z - 2)\[/plugin\]. Why do we do this? Remember that if a polynomial contains a factor like \[plugin:math\](x - 1)\[/plugin\], it evaluates to zero at \[plugin:math\]x = 1\[/plugin\]. So by saying that \[plugin:math\]c(z) = h(z) \\cdot (z - 1)(z - 2)\[/plugin\], we are saying that \[plugin:math\]c(x)\[/plugin\] has factors \[plugin:math\](x - 1)\[/plugin\] and \[plugin:math\](x - 2).\[/plugin\] Further, by saying that \[plugin:math\]c(x)\[/plugin\] has factors \[plugin:math\](x - 1)\[/plugin\] and \[plugin:math\](x - 2)\[/plugin\], we are saying that \[plugin:math\]c(x) = 0\[/plugin\] for \[plugin:math\]x = 1\[/plugin\] and \[plugin:math\]c(x) = 0\[/plugin\] for \[plugin:math\]x = 2\[/plugin\].
 
 **For Step 5:** finally, put these two steps together! We have shown that \[plugin:math\]c(x) = f(x+1) - f(x) \\cdot f(x)\[/plugin\], and we have shown that \[plugin:math\]c(x) = 0\[/plugin\] for \[plugin:math\]x = 1\[/plugin\] and \[plugin:math\]x = 2\[/plugin\]. The corollary of this is that \[plugin:math\]f(x+1) - f(x) \\cdot f(x) = 0\[/plugin\], for \[plugin:math\]x = 1\[/plugin\] and \[plugin:math\]x = 2\[/plugin\]. In other words, we have convinced the verifier that \[plugin:math\]f(2) = f(1) \\cdot f(1)\[/plugin\], and \[plugin:math\]f(3) = f(2) \\cdot f(2)\[/plugin\], which was the first property that we were trying to prove about \[plugin:math\]f\[/plugin\]!!
 
@@ -283,7 +285,7 @@ This simple system that we defined here can be scaled to handle some of the most
 
 ### Epilogue: Commitment Schemes, and Where to Go from Here
 
-There is one final unresolved issue with our system. In our system, our \[plugin:math\]f(x)\[/plugin\] function was supposed to be a degree-2 polynomial, and as we showed, there is only one unique degree-2 polynomial that satisfies our constraints: \[plugin:math\]f(x) = 5x^2 - 13x + 10\[/plugin\].
+There is one final unresolved issue with our system: our \[plugin:math\]f(x)\[/plugin\] function was supposed to be a degree-2 polynomial, because there is only one unique degree-2 polynomial that satisfies our constraints: \[plugin:math\]f(x) = 5x^2 - 13x + 10\[/plugin\].
 
 But what if our prover tried using a degree-3 polynomial? It turns out there are infinitely many degree-3 polynomials that can falsely satisfy our constraints. A couple valid examples:
 
@@ -293,27 +295,27 @@ But what if our prover tried using a degree-3 polynomial? It turns out there are
 
 It's just like that analogy we had with drawing infinitely many lines through a single point. Once we add an extra degree to our function, we can no longer uniquely identify a polynomial with our current constraints.
 
-The solution used by all popular proving systems is a **polynomial commitment scheme** — a mathematical technique that ensures the points the prover hands over really come from a polynomial of the expected degree. You can think of it like a secret box: the prover locks their polynomial inside, and the box only accepts polynomials of the right degree. When the verifier asks for a point, they pull it out of the box, and therefore know it came from a valid polynomial.
+To address this problem, the solution used by all popular proving systems is a **polynomial commitment scheme** — a mathematical technique that ensures the points the prover hands over really come from a polynomial of the expected degree. You can think of it like a secret box: the prover locks their polynomial inside, and the box only accepts polynomials of the right degree. When the verifier asks for a point, they pull it out of the box, and therefore know it came from a valid polynomial.
 
-That "secret box" analogy is deliberately hand-wavy. The actual commitment schemes — FRI[plugin:cite]Ben-Sasson, Bentov, Horesh, Riabzev, "Fast Reed-Solomon Interactive Oracle Proofs of Proximity", 2017, https://eccc.weizmann.ac.il/report/2017/134[/plugin] (used in STARKs) and KZG[plugin:cite]Kate, Zaverucha, Goldberg, "Constant-Size Commitments to Polynomials and Their Applications", 2010, https://www.iacr.org/archive/asiacrypt2010/6477178/6477178.pdf[/plugin] (used in many SNARKs) — are mathematically involved and well beyond middle school math. Understanding how they work is a great next step once you're comfortable with everything covered here.
+The actual commitment schemes — FRI[plugin:cite]Ben-Sasson, Bentov, Horesh, Riabzev, "Fast Reed-Solomon Interactive Oracle Proofs of Proximity", 2017, https://eccc.weizmann.ac.il/report/2017/134[/plugin] (used in STARKs) and KZG[plugin:cite]Kate, Zaverucha, Goldberg, "Constant-Size Commitments to Polynomials and Their Applications", 2010, https://www.iacr.org/archive/asiacrypt2010/6477178/6477178.pdf[/plugin] (used in many SNARKs) — are mathematically involved and well beyond middle school math. Understanding how they work is a great next step once you're comfortable with everything covered here.
 
 **All done!**
 
 [block]
 Now that you've gotten through this, you can deepen your knowledge on each key concept:
 
-* Execution traces[plugin:cite]Ben-Sasson, "ethSTARK Documentation", 2021, https://eprint.iacr.org/2021/582[/plugin]
-* Arithmetization[plugin:cite]Ben-Sasson, "ethSTARK Documentation", 2021, https://eprint.iacr.org/2021/582[/plugin]
-* Polynomial interpolation & the Schwartz-Zippel Lemma[plugin:cite]Schwartz, "Fast Probabilistic Algorithms for Verification of Polynomial Identities", 1980, https://doi.org/10.1145/322217.322225[/plugin][plugin:cite]Thaler, "Proofs, Arguments, and Zero-Knowledge", 2022, https://people.cs.georgetown.edu/jthaler/ProofsArgsAndZK.html[/plugin]
+* Execution traces[plugin:cite]RISC Zero, "What is a Trace?", 2024, https://dev.risczero.com/proof-system/what-is-a-trace[/plugin]
+* Arithmetization[plugin:cite]RareSkills, "Rank-1 Constraint System", 2024, https://rareskills.io/post/rank-1-constraint-system[/plugin][plugin:cite]Zcash, "Arithmetization (Halo 2)", 2023, https://zcash.github.io/halo2/concepts/arithmetization.html[/plugin][plugin:cite]Three Sigma, "Arithmetization in STARKs: Algebraic Intermediate Representation", 2023, https://threesigma.xyz/blog/zk/arithmetization-starks-algebraic-intermediate-representation[/plugin]
+* Polynomial interpolation & the Schwartz-Zippel Lemma[plugin:cite]Wikipedia, "Lagrange polynomial", 2024, https://en.wikipedia.org/wiki/Lagrange_polynomial[/plugin][plugin:cite]Wikipedia, "Schwartz-Zippel lemma", 2024, https://en.wikipedia.org/wiki/Schwartz%E2%80%93Zippel_lemma[/plugin]
 * Reed-Solomon Encoding[plugin:cite]Reed, Solomon, "Polynomial Codes over Certain Finite Fields", 1960, https://doi.org/10.1137/0108018[/plugin]
 * Constraints[plugin:cite]Gennaro, Gentry, Parno, Raykova, "Quadratic Span Programs and Succinct NIZKs without PCPs", 2012, https://eprint.iacr.org/2012/215[/plugin]
-* Polynomial Commitment Schemes[plugin:cite]Kate, Zaverucha, Goldberg, "Constant-Size Commitments to Polynomials and Their Applications", 2010, https://www.iacr.org/archive/asiacrypt2010/6477178/6477178.pdf[/plugin]
-  * FRI[plugin:cite]Ben-Sasson, Bentov, Horesh, Riabzev, "Fast Reed-Solomon Interactive Oracle Proofs of Proximity", 2017, https://eccc.weizmann.ac.il/report/2017/134[/plugin]
-  * KZG[plugin:cite]Kate, Zaverucha, Goldberg, "Constant-Size Commitments to Polynomials and Their Applications", 2010, https://www.iacr.org/archive/asiacrypt2010/6477178/6477178.pdf[/plugin]
+* Polynomial Commitment Schemes
+  * FRI[plugin:cite]Aszepieniec, "Anatomy of a STARK: FRI", 2021, https://aszepieniec.github.io/stark-anatomy/fri.html[/plugin][plugin:cite]Ankita, "Understanding FRI Polynomial Commitments Scheme", 2023, https://medium.com/@aannkkiittaa/understanding-fri-polynomial-commitments-scheme-7391da74c9d9[/plugin]
+  * KZG[plugin:cite]Feist, "Kate polynomial commitments", 2020, https://dankradfeist.de/ethereum/2020/06/16/kate-polynomial-commitments.html[/plugin]
 * End-to-end proving systems:
-  * Groth16[plugin:cite]Groth, "On the Size of Pairing-based Non-interactive Arguments", 2016, https://eprint.iacr.org/2016/260[/plugin]
-  * PLONK[plugin:cite]Gabizon, Williamson, Ciobotaru, "PLONK: Permutations over Lagrange-bases for Oecumenical Noninteractive arguments of Knowledge", 2019, https://eprint.iacr.org/2019/953[/plugin]
-  * STARK[plugin:cite]Ben-Sasson, Bentov, Horesh, Riabzev, "Scalable, Transparent, and Post-quantum Secure Computational Integrity", 2018, https://eprint.iacr.org/2018/046[/plugin]
+  * Groth16[plugin:cite]RareSkills, "Groth16", 2024, https://rareskills.io/post/groth16[/plugin]
+  * PLONK[plugin:cite]Buterin, "Understanding PLONK", 2019, https://vitalik.eth.limo/general/2019/09/22/plonk.html[/plugin]
+  * STARK[plugin:cite]Wong, "How STARKs work if you don't care about FRI", 2024, https://cryptologie.net/posts/how-starks-work-if-you-dont-care-about-fri/[/plugin]
 [/block]
 
 
