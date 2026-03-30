@@ -149,8 +149,17 @@ async function main(): Promise<void> {
     ? titleMatch[1]!.replace(/\*\*/g, '').replace(/\s*\{#[\w-]+\}\s*$/, '').trim()
     : 'Compiled Document'
 
+  // Extract OG metadata from frontmatter
+  const og = (styleConfig?.ogDescription || styleConfig?.ogImage || styleConfig?.ogUrl) ? {
+    description: styleConfig.ogDescription as string | undefined,
+    image: styleConfig.ogImage as string | undefined,
+    url: styleConfig.ogUrl as string | undefined,
+    type: styleConfig.ogType as string | undefined,
+    siteName: styleConfig.ogSiteName as string | undefined,
+  } : undefined
+
   // Render full page
-  const fullHtml = renderPage(title, bodyHtml, clientScripts, bundledRuntime, styleConfig, pluginCss, pluginHeadElements)
+  const fullHtml = renderPage(title, bodyHtml, clientScripts, bundledRuntime, styleConfig, pluginCss, pluginHeadElements, og)
 
   // Determine output path
   const inputDirName = basename(dirname(resolvedInput))

@@ -89,6 +89,8 @@ pointerEventsNone: 'title'
 
 **Features:** `headingUnderline` (comma-separated element IDs), `pointerEventsNone` (comma-separated element IDs), `columnSpan` (comma-separated: 'quotes', 'graphs', 'tables', 'math'), `twoColumnMinWidth`, `threeColumnMinWidth`
 
+**Open Graph / SEO:** `ogDescription`, `ogImage`, `ogUrl`, `ogType` (default: 'article'), `ogSiteName` — generates `<meta>` tags for link previews on social media and messaging apps.
+
 ### Plugin Tags
 
 Inline:

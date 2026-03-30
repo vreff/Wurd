@@ -6,6 +6,9 @@ accentColor: '#7c6ee6'
 h1MaxFontSize: 120
 headingUnderline: true
 pointerEventsNone: 'title'
+ogDescription: 'A ground-up explanation of popular zero-knowledge proving systems.'
+ogImage: 'https://vreff.github.io/Wurd/examples/zk-guide/og.png'
+ogUrl: 'https://vreff.github.io/Wurd/examples/zk-guide/'
 ---
 
 # Zippy {#title}

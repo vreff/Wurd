@@ -2,6 +2,14 @@ export interface StyleConfig {
   [key: string]: string | number | boolean
 }
 
+export interface OgMeta {
+  description?: string
+  image?: string
+  url?: string
+  type?: string
+  siteName?: string
+}
+
 export function renderPage(
   title: string,
   bodyHtml: string,
@@ -10,6 +18,7 @@ export function renderPage(
   styleConfig?: StyleConfig,
   pluginCss: string[] = [],
   pluginHeadElements: string[] = [],
+  og?: OgMeta,
 ): string {
   const themeAttr = styleConfig && Object.keys(styleConfig).length > 0
     ? ` data-theme="${escapeAttr(JSON.stringify(styleConfig))}"`
@@ -34,7 +43,18 @@ export function renderPage(
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>${escapeHtml(title)}</title>
+  <title>${escapeHtml(title)}</title>${og ? `
+  <meta property="og:title" content="${escapeAttr(title)}">
+  <meta property="og:type" content="${escapeAttr(og.type || 'article')}">${og.description ? `
+  <meta property="og:description" content="${escapeAttr(og.description)}">
+  <meta name="description" content="${escapeAttr(og.description)}">` : ''}${og.image ? `
+  <meta property="og:image" content="${escapeAttr(og.image)}">` : ''}${og.url ? `
+  <meta property="og:url" content="${escapeAttr(og.url)}">` : ''}${og.siteName ? `
+  <meta property="og:site_name" content="${escapeAttr(og.siteName)}">` : ''}
+  <meta name="twitter:card" content="${og.image ? 'summary_large_image' : 'summary'}">
+  <meta name="twitter:title" content="${escapeAttr(title)}">${og.description ? `
+  <meta name="twitter:description" content="${escapeAttr(og.description)}">` : ''}${og.image ? `
+  <meta name="twitter:image" content="${escapeAttr(og.image)}">` : ''}` : ''}
 ${headElementsHtml}
   <style>
     /* === CSS Custom Properties (theme-driven) === */
