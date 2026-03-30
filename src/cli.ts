@@ -39,11 +39,12 @@ async function main(): Promise<void> {
 
   const inputPath = process.argv[2]
   if (!inputPath) {
-    console.error('Usage: wurd <path-to-markdown> [--no-cache] [--plugins <dir>]')
+    console.error('Usage: wurd <path-to-markdown> [--no-cache] [--pdf] [--plugins <dir>]')
     process.exit(1)
   }
 
   const noCache = process.argv.includes('--no-cache')
+  const generatePdf = process.argv.includes('--pdf')
 
   // Optional extra plugin directories: --plugins /path/to/dir (repeatable)
   const extraPluginDirs: string[] = []
@@ -173,6 +174,38 @@ async function main(): Promise<void> {
     : outPath
   console.log(`Output: ${relativePath}`)
   console.log(`Size: ${(fullHtml.length / 1024).toFixed(1)} KB`)
+
+  // Generate PDF if requested
+  if (generatePdf) {
+    const pdfPath = join(outDir, 'output.pdf')
+    console.log('Generating PDF...')
+    const puppeteer = await import('puppeteer')
+    const browser = await puppeteer.default.launch()
+    const page = await browser.newPage()
+    const pdfWidth = 1280
+    await page.setViewport({ width: pdfWidth, height: 800 })
+    await page.goto(`file://${outPath}`, { waitUntil: 'networkidle0' })
+    // Wait for fonts and layout to settle
+    await page.evaluate(() => document.fonts.ready)
+    await new Promise(r => setTimeout(r, 2000))
+    // Get the full document height so we produce one continuous page (no pagination)
+    const docHeight = await page.evaluate(() => {
+      const stage = document.getElementById('stage')
+      return stage ? stage.scrollHeight : document.documentElement.scrollHeight
+    })
+    await page.pdf({
+      path: pdfPath,
+      printBackground: true,
+      preferCSSPageSize: false,
+      width: `${pdfWidth}px`,
+      height: `${docHeight + 80}px`,
+    })
+    await browser.close()
+    const pdfRelative = pdfPath.startsWith(projectRoot)
+      ? pdfPath.slice(projectRoot.length + 1)
+      : pdfPath
+    console.log(`PDF: ${pdfRelative}`)
+  }
 }
 
 main().catch(err => {

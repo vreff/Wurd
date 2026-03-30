@@ -167,6 +167,28 @@
       font-size: 14px;
     }
 
+    /* === PDF Button === */
+    #pdf-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(30,30,50,0.85);
+      backdrop-filter: blur(8px);
+      color: rgba(255,255,255,0.7);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s, background 0.2s;
+      opacity: 0.6;
+    }
+    #pdf-btn:hover { opacity: 1; background: rgba(50,50,80,0.9); }
+
     /* === Responsive === */
     @media (max-width: 759px) {
       html { font-size: 16px; line-height: 26px; }
@@ -338,9 +360,18 @@
       background: rgba(255,255,255,0.02);
     }
     
+
+    /* === Print === */
+    @media print {
+      html, body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      #pdf-btn { display: none !important; }
+    }
   </style>
 </head>
 <body>
+  <button id="pdf-btn" onclick="window.print()" aria-label="Save as PDF" title="Save as PDF">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+  </button>
   <div id="article">
     <div id="content-source">
       <div class="md-block"><h1 id="title">Zippy</h1>

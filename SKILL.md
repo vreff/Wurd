@@ -10,7 +10,7 @@ You are working with **Wurd** ([github.com/vreff/Wurd](https://github.com/vreff/
 
 ```bash
 # From the project root:
-npx tsx src/cli.ts <path-to-markdown> [--no-cache] [--plugins <dir>]
+npx tsx src/cli.ts <path-to-markdown> [--no-cache] [--pdf] [--plugins <dir>]
 
 # Or if installed globally:
 wurd <path-to-markdown>

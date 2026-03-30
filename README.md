@@ -270,8 +270,11 @@ wurd <path-to-markdown> [options]
 
 Options:
   --no-cache        Skip LLM response cache (re-generate all AI content)
+  --pdf             Generate a PDF alongside the HTML output (requires Puppeteer)
   --plugins <dir>   Load additional plugins from directory (repeatable)
 ```
+
+Compiled pages include a download button (bottom-right corner) that opens the browser's "Save as PDF" dialog.
 
 ## Project Structure
 

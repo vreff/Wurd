@@ -18,7 +18,8 @@
     "esbuild": "^0.25.0",
     "katex": "^0.16.11",
     "markdown-it": "^14.1.0",
-    "openai": "^6.33.0"
+    "openai": "^6.33.0",
+    "puppeteer": "^24.40.0"
   },
   "devDependencies": {
     "@types/katex": "^0.16.7",
