@@ -188,6 +188,7 @@
       opacity: 0.6;
     }
     #pdf-btn:hover { opacity: 1; background: rgba(50,50,80,0.9); }
+    #pdf-btn.loading { pointer-events: none; opacity: 0.4; }
 
     /* === Responsive === */
     @media (max-width: 759px) {
@@ -360,18 +361,52 @@
       background: rgba(255,255,255,0.02);
     }
     
-
-    /* === Print === */
-    @media print {
-      html, body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-      #pdf-btn { display: none !important; }
-    }
   </style>
 </head>
 <body>
-  <button id="pdf-btn" onclick="window.print()" aria-label="Save as PDF" title="Save as PDF">
+  <button id="pdf-btn" aria-label="Save as PDF" title="Save as PDF">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
   </button>
+  <script>
+  document.getElementById('pdf-btn').addEventListener('click', async function() {
+    const btn = this;
+    btn.classList.add('loading');
+    function loadScript(src) {
+      return new Promise(function(resolve, reject) {
+        var s = document.createElement('script');
+        s.src = src; s.onload = resolve; s.onerror = reject;
+        document.head.appendChild(s);
+      });
+    }
+    try {
+      if (!window.html2canvas) await loadScript('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js');
+      if (!window.jspdf) await loadScript('https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js');
+      const stage = document.getElementById('stage') || document.body;
+      var stageH = stage.scrollHeight || stage.offsetHeight;
+      var stageW = stage.scrollWidth || stage.offsetWidth;
+      // Browsers cap canvas at ~32k px per dimension and ~124M total pixels
+      var maxDim = 32000;
+      var maxArea = 120000000;
+      var scale = 2;
+      while ((stageW * scale > maxDim) || (stageH * scale > maxDim) || (stageW * scale * stageH * scale > maxArea)) { scale = scale * 0.75; }
+      scale = Math.max(scale, 0.5);
+      const canvas = await window.html2canvas(stage, {
+        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--bg-color').trim() || '#0f0f1a',
+        scale: scale,
+        useCORS: true,
+        logging: false,
+      });
+      const imgData = canvas.toDataURL('image/jpeg', 0.92);
+      const pxToMm = 0.264583;
+      const w = canvas.width * pxToMm / scale;
+      const h = canvas.height * pxToMm / scale;
+      const pdf = new window.jspdf.jsPDF({ orientation: w > h ? 'l' : 'p', unit: 'mm', format: [Math.min(w, 14400), Math.min(h, 14400)] });
+      pdf.addImage(imgData, 'JPEG', 0, 0, w, h);
+      pdf.save((document.title || 'document') + '.pdf');
+    } catch(e) { console.error('PDF generation failed:', e); alert('PDF export failed: ' + e.message); }
+    finally { btn.classList.remove('loading'); }
+  });
+  </script>
   <div id="article">
     <div id="content-source">
       <div class="md-block"><h1 id="title">Zippy</h1>
