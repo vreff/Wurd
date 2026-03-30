@@ -1,0 +1,31 @@
+{
+  "name": "wurd",
+  "version": "1.0.0",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vreff/Wurd.git"
+  },
+  "bin": {
+    "wurd": "src/cli.ts"
+  },
+  "scripts": {
+    "build": "npx tsx src/cli.ts",
+    "compile": "npx tsx src/cli.ts examples/zk-guide/text.md",
+    "serve": "npx serve dist/zk-guide"
+  },
+  "dependencies": {
+    "@chenglou/pretext": "^0.0.3",
+    "esbuild": "^0.25.0",
+    "katex": "^0.16.11",
+    "markdown-it": "^14.1.0",
+    "openai": "^6.33.0"
+  },
+  "devDependencies": {
+    "@types/katex": "^0.16.7",
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}
