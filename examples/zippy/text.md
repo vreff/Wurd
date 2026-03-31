@@ -39,7 +39,7 @@ The general steps that Zippy follows are:
 
 ### Why this guide?
 
-There is no shortage of great guides on the basics of zero-knowledge proofs (zk, for short), but there is a chasm between those guides — which mainly focus on the concept of a zero-knowledge proof — and actually understanding how today's proving systems verify computation. The learning curve goes from basic logical arguments straight to advanced algebra and number theory.
+There is no shortage of great guides on the basics of zero-knowledge proofs[plugin:cite]Chainlink, "What Is a Zero-Knowledge Proof (ZKP)?", https://chain.link/education/zero-knowledge-proof-zkp[/plugin], but there is a chasm between those guides — which mainly focus on the concept of a zero-knowledge proof — and actually understanding how today's proving systems verify computation. The learning curve goes from basic logical arguments straight to advanced algebra and number theory.
 
 The proving systems of today bring together a few highly technical concepts: execution traces, arithmetization, polynomial interpolation, constraints, and commitment schemes. Zippy uses all of these, in a simplified form. Some aspects of Zippy are closest to a STARK[plugin:cite]Ben-Sasson, Bentov, Horesh, Riabzev, "Scalable, Transparent, and Post-quantum Secure Computational Integrity", 2018, https://eprint.iacr.org/2018/046[/plugin], but the general steps are the same ones followed by both SNARKs and STARKs. If you understand this guide, you will be able to use that understanding to tackle the much more complicated, more specific system of your choice.
 
