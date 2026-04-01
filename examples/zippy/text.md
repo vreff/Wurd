@@ -321,4 +321,9 @@ Now that you've gotten through this, you can deepen your knowledge on each key c
   * STARK[plugin:cite]Wong, "How STARKs work if you don't care about FRI", 2024, https://cryptologie.net/posts/how-starks-work-if-you-dont-care-about-fri/[/plugin]
 [/block]
 
+[plugin:footer]
+github: https://github.com/vreff
+twitter: https://twitter.com/zk_knowitall
+[/plugin]
+
 
